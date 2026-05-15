@@ -30,6 +30,7 @@ const Course = (props) => {
     <>
       <Header course={course} />
       <Content course={course} />
+      <Sum parts = {course.parts} />
     </>
   );
 };
@@ -42,7 +43,11 @@ const Header = (props) => {
 const Content = (props) => {
   const parts = props.course.parts;
   return parts.map((part) => {
-    return <Part part={part} />;
+    return (
+      <>
+    <Part part={part} />
+    </>
+  );
   });
 };
 
@@ -53,5 +58,13 @@ const Part = ({ part }) => {
     </p>
   );
 };
+
+const Sum = ( {parts} ) => {
+  let total = 0;
+  parts.forEach( part => {
+    total += part.exercises;
+  })
+  return <p>Total exercises: {total}</p>
+}
 
 export default App;
