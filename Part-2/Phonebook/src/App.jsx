@@ -1,4 +1,8 @@
 import { useState } from "react";
+import Persons from "./components/Persons"
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
+
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -25,6 +29,7 @@ const App = () => {
       };
       setPersons((prev) => [...prev, newPerson]);
       setNewName("");
+      setNewNumber("");
     }
   };
 
@@ -49,34 +54,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter: <input value={newFilter} onChange={(e) => handleFilter(e)} />
-      </div>
-      <form onSubmit={handleSubmit}>
-        <h3>Add new number</h3>
-        <div>
-          Name:{" "}
-          <input
-            required
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-        </div>
-        <div>
-          Number:{" "}
-          <input
-            required
-            value={newNumber}
-            onChange={(e) => setNewNumber(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
+      <Filter newFilter={newFilter} handleFilter={handleFilter} />
+      <PersonForm newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} handleSubmit={handleSubmit} /> 
       <h2>Numbers</h2>
-      <People
+      <Persons
         persons={persons}
         showAll={showAll}
         personsToShow={personsToShow}
@@ -85,24 +66,5 @@ const App = () => {
   );
 };
 
-const People = ({ persons, showAll, personsToShow }) => {
-  if (persons.length < 1) {
-    return;
-  } else {
-    if (showAll) {
-      return persons.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-      ));
-    } else {
-      return personsToShow.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
-        </p>
-      ));
-    }
-  }
-};
 
 export default App;
