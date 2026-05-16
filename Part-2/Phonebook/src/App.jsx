@@ -4,24 +4,27 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newPerson = {
-      name: newName
+    /* Logic to check if the Entered name is already in the state */
+    if (persons.some((person) => person.name === newName)) {
+      alert(`${newName} is already on the Phonebook`);
+    } else {
+      const newPerson = {
+        name: newName,
+      };
+      setPersons((prev) => [...prev, newPerson]);
+      setNewName("");
     }
-    setPersons( prev => [...prev, newPerson])
-    setNewName('')
-  }
-  
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          Name: 
-          <input value={newName}
-          onChange={(e) => setNewName(e.target.value)}/>
+          Name:
+          <input value={newName} onChange={(e) => setNewName(e.target.value)} />
         </div>
         <div>
           <button type="submit">Add</button>
