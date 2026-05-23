@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import axios from "axios";
+import { fetchPersons } from "./services/notes.js";
+import { postPersons } from "./services/notes.js";
+import { deletePerson } from "./services/notes.js";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,14 +15,7 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      const fetchedPersons = response.data
-      console.log(fetchedPersons)
-      setPersons(fetchedPersons)
-  })
-
+    fetchPersons().then((data) => setPersons(data));
   }, []);
 
   const handleSubmit = (e) => {
@@ -33,7 +28,9 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      setPersons((prev) => [...prev, newPerson]);
+      postPersons(newPerson).then((postedPerson) =>
+        setPersons([...persons, postedPerson]),
+      );
       setNewName("");
       setNewNumber("");
     }
@@ -57,6 +54,19 @@ const App = () => {
     }
   };
 
+  const handleDelete = (people) => {
+    const result = window.confirm(`Delete ${people.name}?`);
+    if (result) {
+      deletePerson(people.id);
+      const newPersons = [...persons].filter(
+        (person) => person.id !== people.id,
+      );
+      setPersons(newPersons);
+    } else {
+      return;
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -73,6 +83,7 @@ const App = () => {
         persons={persons}
         showAll={showAll}
         personsToShow={personsToShow}
+        handleDelete={handleDelete}
       />
     </div>
   );
