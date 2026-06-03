@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let baseUrl = "http://localhost:3001/persons";
+let baseUrl = "/api/persons";
 
 export const fetchPersons = () => {
   return axios.get(baseUrl).then((response) => response.data);

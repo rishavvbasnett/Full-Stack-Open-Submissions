@@ -1,4 +1,5 @@
 import express, { json, request, response } from "express";
+import morgan from 'morgan'
 
 let numbersList = [
   {
@@ -20,6 +21,8 @@ let numbersList = [
 
 const app = express();
 app.use(express.json());
+app.use(morgan('tiny'))
+
 
 app.get("/", (request, response) => {
   response.send("<h1>Welcome to my server</h1>");

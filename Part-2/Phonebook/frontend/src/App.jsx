@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import { fetchPersons } from "./services/notes.js";
-import { postPersons } from "./services/notes.js";
-import { deletePerson } from "./services/notes.js";
+import { fetchPersons } from "./services/api.js";
+import { postPersons } from "./services/api.js";
+import { deletePerson } from "./services/api.js";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [personsToShow, setPersonsToShow] = useState([]);
   const [newFilter, setNewFilter] = useState("");
+  const nameRef = useRef(null);
+  const numberRef = useRef(null);
 
   useEffect(() => {
     fetchPersons().then((data) => setPersons(data));
@@ -20,19 +20,21 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const name = nameRef.current.value;
+    const number = numberRef.current.value;
     /* Logic to check if the Entered name is already in the state */
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already on the Phonebook`);
+    if (persons.some((person) => person.name === name)) {
+      alert(`${name} is already on the Phonebook`);
     } else {
       const newPerson = {
-        name: newName,
-        number: newNumber,
+        name: name,
+        number: number,
       };
       postPersons(newPerson).then((postedPerson) =>
         setPersons([...persons, postedPerson]),
       );
-      setNewName("");
-      setNewNumber("");
+      nameRef.current.value = "";
+      numberRef.current.value = "";
     }
   };
 
@@ -72,11 +74,9 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter newFilter={newFilter} handleFilter={handleFilter} />
       <PersonForm
-        newName={newName}
-        setNewName={setNewName}
-        newNumber={newNumber}
-        setNewNumber={setNewNumber}
         handleSubmit={handleSubmit}
+        nameRef={nameRef}
+        numberRef={numberRef}
       />
       <h2>Numbers</h2>
       <Persons
