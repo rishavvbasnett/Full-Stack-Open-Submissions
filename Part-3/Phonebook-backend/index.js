@@ -1,5 +1,6 @@
 import express, { json, request, response } from "express";
-import morgan from 'morgan'
+import morgan from "morgan";
+import cors from "cors";
 
 let numbersList = [
   {
@@ -20,12 +21,13 @@ let numbersList = [
 ];
 
 const app = express();
+app.use(express.static("dist"));
+app.use(cors());
 app.use(express.json());
-app.use(morgan('tiny'))
-
+app.use(morgan("tiny"));
 
 app.get("/", (request, response) => {
-  response.send("<h1>Welcome to my server</h1>");
+  response.send("<h1>This server is serving a Phonebook</h1>");
 });
 
 app.get("/api/persons", (request, response) => {
@@ -82,6 +84,7 @@ app.post("/api/persons/", (request, response) => {
   }
 });
 
-app.listen(3001);
+const PORT = process.env.PORT;
+app.listen(PORT, () => console.log("Server has started on PORT: ", PORT));
 
 const generateId = () => Math.floor(Math.random() * 100000);
