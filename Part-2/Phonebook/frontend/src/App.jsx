@@ -15,7 +15,9 @@ const App = () => {
   const numberRef = useRef(null);
 
   useEffect(() => {
-    fetchPersons().then((data) => setPersons(data));
+    fetchPersons().then((data) => {
+      console.log(data)
+      setPersons(data)});
   }, []);
 
   const handleSubmit = (e) => {
@@ -59,9 +61,9 @@ const App = () => {
   const handleDelete = (people) => {
     const result = window.confirm(`Delete ${people.name}?`);
     if (result) {
-      deletePerson(people.id);
+      deletePerson(people._id);
       const newPersons = [...persons].filter(
-        (person) => person.id !== people.id,
+        (person) => person._id !== people._id,
       );
       setPersons(newPersons);
     } else {
