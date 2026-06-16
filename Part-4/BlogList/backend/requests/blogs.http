@@ -1,0 +1,41 @@
+### Get all Blogs
+GET http://localhost:3001/api/blogs
+
+### Update a Blog
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+
+{
+  "title": "ADD ANOTHER BLOG",
+  "author": "Me",
+  "url": "bloglist.com/1",
+  "likes": 10
+}
+
+### Update a Blog
+PATCH http://localhost:3001/api/blogs/6a303c25669ee052c7af79df
+Content-Type: application/json
+
+{
+  "likes": 11
+}
+
+### Delete a Blog
+DELETE http://localhost:3001/api/blogs/6a303c25669ee052c7af79df
+
+### TEST: Unknown Endpoint
+GET http://localhost:3001/api/nonsense
+
+### TEST: POST with invalid data
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+
+{
+  "id": "invalidId"
+}
+
+### TEST: POST without Body
+POST http://localhost:3001/api/blogs/
+
+### TEST: DELETE with Invalid Id
+DELETE http://localhost:3001/api/blogs/6a306d937a1ade80151ae1c1
