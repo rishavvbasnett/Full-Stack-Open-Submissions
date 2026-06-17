@@ -21,7 +21,6 @@ blogsRouter.get("/", async (request, response, next) => {
 blogsRouter.post("/", async (request, response, next) => {
   try {
     const sentBlog = request.body;
-    info(sentBlog);
     if (sentBlog) {
       const sentBlogDocument = new Blog({
         title: sentBlog.title,
